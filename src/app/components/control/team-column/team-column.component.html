@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="titleBlock">
+        <p class="title">Teams</p>
+        <mat-icon
+            *ngIf="isAdmin"
+            class="icon"
+            (click)="showNewTeam = !showNewTeam"
+            >library_add</mat-icon
+        >
+    </div>
+    <hr class="line" />
+    <div class="teamList">
+        <team-component
+            *ngIf="showNewTeam"
+            class="unit newTeamUnit"
+            [isNewTeam]="true"
+            [isAdmin]="isAdmin"
+            (updateTeamEvent)="updateTeam($event)"
+            (createTeamEvent)="createTeam($event)"
+            (deleteTeamEvent)="deleteTeam($event)"
+        ></team-component>
+        <team-component
+            class="unit"
+            *ngFor="let one of entities"
+            [team]="one"
+            [isAdmin]="isAdmin"
+            (updateTeamEvent)="updateTeam($event)"
+            (createTeamEvent)="createTeam($event)"
+            (deleteTeamEvent)="deleteTeam($event)"
+        ></team-component>
+    </div>
+</div>

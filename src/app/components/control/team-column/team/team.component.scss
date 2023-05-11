@@ -1,0 +1,62 @@
+@import url(../../../../common/styles/line.scss);
+
+.bigTitle {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.teamInputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 20%;
+}
+
+.button {
+    cursor: pointer;
+}
+
+.field {
+    width: 80%;
+}
+
+.field :disabled {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.users {
+    width: 50%;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.titleBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.title {
+    font-weight: 500;
+}
+
+p {
+    display: inline;
+    margin: 0px;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.newTeamHeader.mat-expansion-panel-header.mat-expanded {
+    height: 12px;
+}

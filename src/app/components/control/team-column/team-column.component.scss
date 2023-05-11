@@ -1,0 +1,27 @@
+@import url(../../../common/styles/line.scss);
+
+.container {
+    background-color: white;
+    width: 100%;
+    height: auto;
+}
+
+.container p {
+    display: inline;
+    margin: 0px;
+}
+
+.container .titleBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.title {
+    font-size: 18px;
+}
+
+.icon {
+    cursor: pointer;
+}

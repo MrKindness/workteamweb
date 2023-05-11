@@ -1,0 +1,68 @@
+<mat-accordion>
+    <mat-expansion-panel [expanded]="isNewTeam" [hideToggle]="isNewTeam">
+        <mat-expansion-panel-header
+            [ngClass]="isNewTeam ? 'newTeamHeader' : ''"
+            #panelH
+            (click)="isNewTeam ? panelH._toggle() : {}"
+        >
+            <mat-panel-title class="bigTitle">
+                {{ team.name }}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="controls">
+            <div class="teamInputs">
+                <mat-form-field class="field">
+                    <mat-label>Name</mat-label>
+                    <input
+                        matInput
+                        placeholder="name"
+                        [(ngModel)]="actualFieldsTeam.name"
+                        [disabled]="!isEditing"
+                    />
+                </mat-form-field>
+                <div class="buttons teamButtons" *ngIf="isAdmin">
+                    <mat-icon
+                        class="button saveEntity"
+                        *ngIf="isEditing"
+                        (click)="saveTeam()"
+                        >save</mat-icon
+                    >
+                    <mat-icon
+                        class="button editEntity"
+                        *ngIf="!isEditing"
+                        (click)="isEditing = !isEditing"
+                        >edit</mat-icon
+                    >
+                    <mat-icon class="button deleteEntity" (click)="deleteTeam()"
+                        >delete_forever</mat-icon
+                    >
+                </div>
+            </div>
+            <div class="titleBlock">
+                <p class="title">Users</p>
+                <mat-icon
+                    class="icon"
+                    *ngIf="isAdmin && isEditing"
+                    (click)="showNewUserInput()"
+                    >library_add</mat-icon
+                >
+            </div>
+            <hr class="line" />
+            <div class="users">
+                <new-team-user-component
+                    *ngIf="isAdmin && isEditing && newUserInputVisible"
+                    [users]="candidates"
+                    (addNewEvent)="addNewUser($event)"
+                    (deleteNewEvent)="newUserInputVisible = false"
+                ></new-team-user-component>
+                <inner-team-user-component
+                    *ngFor="let one of actualFieldsTeam.users"
+                    [username]="one"
+                    [isAdmin]="isAdmin"
+                    [isEditing]="isEditing"
+                    (deleteUserEvent)="deleteUser($event)"
+                ></inner-team-user-component>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

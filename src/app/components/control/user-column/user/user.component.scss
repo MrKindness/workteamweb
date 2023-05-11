@@ -1,0 +1,41 @@
+.controls {
+    display: flex;
+    justify-content: space-around;
+}
+
+.bigTitle {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.field :disabled {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+#roleField {
+    width: 50%;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.buttons .button {
+    font-size: 28px;
+    height: auto;
+    width: auto;
+    cursor: pointer;
+}
+
+.newUserHeader.mat-expansion-panel-header.mat-expanded {
+    height: 12px;
+}

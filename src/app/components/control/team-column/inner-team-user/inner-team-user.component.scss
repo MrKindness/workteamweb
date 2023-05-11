@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+}
+
+.field {
+    width: 60%;
+}
+
+.field :disabled {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.button {
+    cursor: pointer;
+}

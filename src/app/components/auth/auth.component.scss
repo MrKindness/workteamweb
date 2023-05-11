@@ -1,0 +1,40 @@
+.formContainer {
+    display: grid;
+    grid-template-rows: 1fr auto 6fr;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.formSignin {
+    display: grid;
+    grid-row: 2/3;
+    width: 20%;
+}
+
+.formSigninHeading {
+    text-align: center;
+}
+
+.message {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    border-color: #f5c6cb;
+    color: #721c24;
+    background-color: #f8d7da;
+    padding: 10px;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+#visibilityButton {
+    font-size: 24px;
+}
+
+.loginButton {
+    width: 100%;
+    margin: 10px 0px;
+}

@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="titleBlock">
+        <p class="title">Colegues</p>
+        <mat-icon
+            *ngIf="isAdmin"
+            class="icon"
+            (click)="showNewUser = !showNewUser"
+            >library_add</mat-icon
+        >
+    </div>
+    <hr class="line" />
+    <div class="userList">
+        <user-component
+            *ngIf="showNewUser"
+            class="unit newUserUnit"
+            [isNewUser]="true"
+            [isAdmin]="isAdmin"
+            (updateUserEvent)="updateUser($event)"
+            (createUserEvent)="createUser($event)"
+            (deleteUserEvent)="deleteUser($event)"
+        ></user-component>
+        <user-component
+            class="unit"
+            *ngFor="let one of entities"
+            [user]="one"
+            [isAdmin]="isAdmin"
+            (updateUserEvent)="updateUser($event)"
+            (createUserEvent)="createUser($event)"
+            (deleteUserEvent)="deleteUser($event)"
+        ></user-component>
+    </div>
+</div>

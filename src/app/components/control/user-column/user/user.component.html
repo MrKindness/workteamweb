@@ -1,0 +1,71 @@
+<mat-accordion>
+    <mat-expansion-panel [expanded]="isNewUser" [hideToggle]="isNewUser">
+        <mat-expansion-panel-header
+            [ngClass]="isNewUser ? 'newUserHeader' : ''"
+            #panelH
+            (click)="isNewUser ? panelH._toggle() : {}"
+        >
+            <mat-panel-title class="bigTitle">
+                {{ user.username }}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="controls">
+            <div class="inputs">
+                <mat-form-field class="field">
+                    <mat-label>Username</mat-label>
+                    <input
+                        matInput
+                        placeholder="username"
+                        [(ngModel)]="actualFieldsUser.username"
+                        [disabled]="!isEditing"
+                    />
+                </mat-form-field>
+                <mat-form-field class="field">
+                    <mat-label>Name</mat-label>
+                    <input
+                        matInput
+                        placeholder="name"
+                        [(ngModel)]="actualFieldsUser.name"
+                        [disabled]="!isEditing"
+                    />
+                </mat-form-field>
+                <mat-form-field class="field">
+                    <mat-label>Email</mat-label>
+                    <input
+                        matInput
+                        placeholder="email"
+                        [(ngModel)]="actualFieldsUser.email"
+                        [disabled]="!isEditing"
+                    />
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="field" id="roleField">
+                    <mat-label>Role</mat-label>
+                    <mat-select
+                        [disabled]="!isEditing"
+                        [(value)]="actualFieldsUser.role"
+                    >
+                        <mat-option value="USER">USER</mat-option>
+                        <mat-option value="ADMIN">ADMIN</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="buttons" *ngIf="isAdmin || isNewUser">
+                <mat-icon
+                    class="button saveEntity"
+                    *ngIf="isEditing"
+                    (click)="saveUser()"
+                    >save</mat-icon
+                >
+                <mat-icon
+                    class="button editEntity"
+                    *ngIf="!isEditing"
+                    (click)="isEditing = !isEditing"
+                    >edit</mat-icon
+                >
+                <mat-icon class="button deleteEntity" (click)="deleteUser()"
+                    >delete_forever</mat-icon
+                >
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion>

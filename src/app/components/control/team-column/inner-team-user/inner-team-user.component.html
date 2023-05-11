@@ -1,0 +1,11 @@
+<div class="container">
+    <mat-form-field class="field">
+        <input matInput [value]="username" disabled="true" />
+    </mat-form-field>
+    <mat-icon
+        class="button"
+        *ngIf="isAdmin && isEditing"
+        (click)="deleteUserEvent.emit(username)"
+        >delete_forever</mat-icon
+    >
+</div>

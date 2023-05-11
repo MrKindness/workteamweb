@@ -1,0 +1,23 @@
+.header {
+    grid-column: 2/3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header p {
+    display: inline;
+    margin: 0px;
+    font-size: 18px;
+}
+
+.header .logout {
+    font-family: "Nunito Sans";
+    font-size: 18px;
+}
+
+.userPanel {
+    display: flex;
+    justify-content: space-between;
+    width: 14%;
+}

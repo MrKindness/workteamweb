@@ -1,0 +1,32 @@
+<div id="mainContainer">
+    <toolbar-component
+        id="header"
+        (editUserEvent)="showContent = !showContent"
+        [message]="showContent ? 'Settings' : 'Back'"
+        [user]="loggedUser"
+    ></toolbar-component>
+    <div id="container" *ngIf="showContent">
+        <user-column-component
+            *ngIf="users.length > 0"
+            class="column colegues"
+            [entities]="users"
+            [isAdmin]="loggedUser!.role == 'ADMIN'"
+            (dataOnChange)="refreshControlPanel()"
+        ></user-column-component>
+        <team-column-component
+            *ngIf="teams.length > 0"
+            class="column teams"
+            [entities]="teams"
+            [isAdmin]="loggedUser!.role == 'ADMIN'"
+            (dataOnChange)="refreshControlPanel()"
+        ></team-column-component>
+    </div>
+    <!-- <login-component
+        [headMessage]="'Settings'"
+        [buttonMessage]="'Save'"
+        [userEdit]="true"
+        [user]="loggedUser!"
+        *ngIf="!showContent"
+        (endEvent)="showContent = !showContent"
+    ></login-component> -->
+</div>

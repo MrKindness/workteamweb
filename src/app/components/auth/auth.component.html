@@ -1,0 +1,38 @@
+<div class="formContainer">
+    <div class="formSignin">
+        <h2 class="formSigninHeading">Sign In</h2>
+        <div class="message" *ngIf="showErrorMessage">
+            Invalid password or username!
+        </div>
+        <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="username" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input
+                matInput
+                [type]="passwordVisibility ? 'text' : 'password'"
+                [(ngModel)]="password"
+            />
+            <button
+                matSuffix
+                mat-icon-button
+                id="visibilityButton"
+                (click)="passwordVisibility = !passwordVisibility"
+            >
+                <mat-icon *ngIf="!passwordVisibility">visibility</mat-icon>
+                <mat-icon *ngIf="passwordVisibility">visibility_off</mat-icon>
+            </button>
+        </mat-form-field>
+        <button
+            [disabled]="disableButton"
+            class="loginButton"
+            mat-flat-button
+            color="primary"
+            (click)="handleClick($event)"
+        >
+            {{ buttonMessage }}
+        </button>
+    </div>
+</div>

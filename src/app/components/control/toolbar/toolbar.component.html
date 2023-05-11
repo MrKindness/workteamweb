@@ -1,0 +1,22 @@
+<div class="header">
+    <p class="roles">Role: {{ this.user?.role }}</p>
+    <p class="username">Username: {{ this.user?.username }}</p>
+    <div class="userPanel">
+        <button
+            class="button"
+            mat-flat-button
+            color="primary"
+            (click)="editAccount()"
+        >
+            {{ message }}
+        </button>
+        <button
+            class="button"
+            mat-flat-button
+            color="primary"
+            (click)="logoutUser()"
+        >
+            Logout
+        </button>
+    </div>
+</div>

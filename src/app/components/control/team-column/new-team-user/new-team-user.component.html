@@ -1,0 +1,21 @@
+<div class="container">
+    <mat-form-field class="field">
+        <mat-label>Username</mat-label>
+        <input
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+            [(ngModel)]="newUsername"
+        />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option
+                *ngFor="let user of filteredObjects | async"
+                [value]="user"
+            >
+                {{ user }}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <mat-icon class="button" (click)="addNew()">save</mat-icon>
+    <mat-icon class="button" (click)="deleteNew()">delete_forever</mat-icon>
+</div>

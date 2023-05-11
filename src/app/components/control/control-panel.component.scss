@@ -1,0 +1,32 @@
+#mainContainer {
+    height: 100%;
+    width: 100%;
+}
+
+#header {
+    display: grid;
+    grid-template-columns: 1fr 12fr 1fr;
+    background: white;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    margin: 10px 0px;
+}
+
+.column {
+    width: 40%;
+    margin: 0px 0px 10px 0px;
+    height: auto;
+}
