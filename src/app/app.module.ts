@@ -30,7 +30,7 @@ import { Constants } from './utils/constants';
 import { AuthComponent } from './components/auth/auth.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
-import { httpInterceptorProviders } from './services/auth.interceptor';
+import { httpInterceptorProviders } from './services/auth/auth.interceptor';
 
 const appRoutes: Routes = [
     { path: '', component: StartPageComponent },

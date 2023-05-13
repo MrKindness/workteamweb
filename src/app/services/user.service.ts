@@ -1,22 +1,85 @@
 import { Injectable } from '@angular/core';
-import { Router, UrlSegment } from '@angular/router';
 import { User } from '../model/user';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Constants } from '../utils/constants';
-import { catchError, filter, map, take } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    constructor(
-        private authService: AuthService,
-        private router: Router,
-        private http: HttpClient
-    ) {}
+    constructor(private authService: AuthService, private http: HttpClient) {}
 
-    getVisibleUsers(): User[] {
-        return [new User()];
+    getLoggedUser(): Observable<{ error: boolean; response?: User }> {
+        return this.http
+            .get<User>(Constants.apiPath + Constants.userDetailsRequest)
+            .pipe(
+                map((result) => {
+                    return { error: false, response: result };
+                }),
+                catchError(async (error) => {
+                    console.log(error);
+                    this.authService.logoutUser();
+                    return { error: true, response: undefined };
+                })
+            );
+    }
+
+    getColleagues(): Observable<{ error: boolean; response: User[] }> {
+        return this.http
+            .get<User[]>(Constants.apiPath + Constants.colleaguesRequest)
+            .pipe(
+                map((result) => {
+                    return { error: false, response: result };
+                }),
+                catchError(async (error) => {
+                    console.log('error while loading collegues:');
+                    console.log(error);
+                    return { error: true, response: [] };
+                })
+            );
+    }
+
+    createUser(user: User): Observable<{ error: boolean; response: any }> {
+        return this.http
+            .post(Constants.apiPath + Constants.userRoot, user)
+            .pipe(
+                map((result) => {
+                    return { error: false, response: 'User created!' };
+                }),
+                catchError(async (error) => {
+                    console.log('user create error:');
+                    console.log(error);
+
+                    let response = 'User create error!';
+                    try {
+                        response = error.error.message;
+                    } catch (ex) {}
+                    return { error: true, response: response };
+                })
+            );
+    }
+
+    deleteUser(
+        username: string
+    ): Observable<{ error: boolean; response: any }> {
+        return this.http
+            .delete(Constants.apiPath + Constants.userRoot + '/' + username)
+            .pipe(
+                map((result) => {
+                    return { error: false, response: 'User deleted!' };
+                }),
+                catchError(async (error) => {
+                    console.log('user delete error:');
+                    console.log(error);
+
+                    let response = 'User delete error!';
+                    try {
+                        response = error.error.message;
+                    } catch (ex) {}
+                    return { error: true, response: response };
+                })
+            );
     }
 
     getAllUsers(): User[] {
@@ -27,21 +90,5 @@ export class UserService {
         return new User();
     }
 
-    saveUser(user: User, password: string) {}
-
     updateUser(username: string, newData: User, password?: string): void {}
-
-    deleteUser(username: string): void {}
-
-    getLoggedUser(): Observable<User> {
-        return this.http
-            .get<User>(Constants.apiPath + Constants.userDetailsRequest)
-            .pipe(
-                catchError(async (error) => {
-                    console.log(error);
-                    this.authService.logoutUser();
-                    return new User();
-                })
-            );
-    }
 }

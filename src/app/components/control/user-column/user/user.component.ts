@@ -9,6 +9,8 @@ import { User } from 'src/app/model/user';
 export class UserComponent implements OnInit {
     isEditing: boolean = false;
     actualFieldsUser!: User;
+    disableSaveButton: boolean = false;
+    disableDeleteButton: boolean = false;
 
     @Input() user: User = new User();
     @Input() isNewUser: boolean = false;

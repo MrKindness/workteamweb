@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterService } from 'src/app/services/router.service';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -8,9 +9,9 @@ import { Constants } from 'src/app/utils/constants';
     styleUrls: ['./start-page.component.scss'],
 })
 export class StartPageComponent {
-    constructor(private router: Router) {}
+    constructor(private routerService: RouterService) {}
 
     handleClick() {
-        this.router.navigateByUrl(Constants.controlPage);
+        this.routerService.navigateUrl(Constants.controlPage);
     }
 }

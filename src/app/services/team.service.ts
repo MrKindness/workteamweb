@@ -1,16 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { RoleEnum } from '../model/role.enum';
 import { Team } from '../model/team';
-import { User } from '../model/user';
-import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Constants } from '../utils/constants';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class TeamService {
-    constructor(private authService: AuthService) {}
+    constructor(private http: HttpClient) {}
 
-    getVisibleTeams(): Team[] {
-        return [new Team()];
+    getTeams(): Observable<{ error: boolean; response: Team[] }> {
+        return this.http
+            .get<Team[]>(Constants.apiPath + Constants.teamsRequest)
+            .pipe(
+                map((result) => {
+                    return { error: false, response: result };
+                }),
+                catchError(async (error) => {
+                    console.log('error while loading teams:');
+                    console.log(error);
+                    return { error: true, response: [] };
+                })
+            );
     }
 
     getTeamByName(name: string): Team | undefined {

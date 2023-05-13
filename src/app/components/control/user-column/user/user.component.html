@@ -50,21 +50,29 @@
                 </mat-form-field>
             </div>
             <div class="buttons" *ngIf="isAdmin || isNewUser">
-                <mat-icon
-                    class="button saveEntity"
-                    *ngIf="isEditing"
+                <button
+                    mat-icon-button
                     (click)="saveUser()"
-                    >save</mat-icon
+                    [disabled]="disableSaveButton"
+                    *ngIf="isEditing"
                 >
-                <mat-icon
-                    class="button editEntity"
+                    <mat-icon class="icon">save</mat-icon>
+                </button>
+                <button
+                    mat-icon-button
                     *ngIf="!isEditing"
                     (click)="isEditing = !isEditing"
-                    >edit</mat-icon
                 >
-                <mat-icon class="button deleteEntity" (click)="deleteUser()"
-                    >delete_forever</mat-icon
+                    <mat-icon class="icon">edit</mat-icon>
+                </button>
+
+                <button
+                    mat-icon-button
+                    (click)="deleteUser()"
+                    [disabled]="disableDeleteButton"
                 >
+                    <mat-icon class="icon">delete_forever</mat-icon>
+                </button>
             </div>
         </div>
     </mat-expansion-panel>

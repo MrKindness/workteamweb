@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { catchError, map, tap } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
-import { AuthResponse } from '../model/auth/auth-response';
-import { Constants } from '../utils/constants';
-import { AuthRequest } from '../model/auth/auth-request';
+import { AuthResponse } from '../../model/auth/auth-response';
+import { Constants } from '../../utils/constants';
+import { AuthRequest } from '../../model/auth/auth-request';
+import { RouterService } from '../router.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     token: String = '';
 
-    constructor(private router: Router, private http: HttpClient) {}
+    constructor(
+        private routerService: RouterService,
+        private http: HttpClient
+    ) {}
 
     authUser(username: string, password: string): Observable<Boolean> {
         if (username && password) {
@@ -55,7 +58,7 @@ export class AuthService {
     logoutUser() {
         localStorage.removeItem('id_token');
         localStorage.removeItem('expires_at');
-        this.router.navigate([Constants.authPage]);
+        this.routerService.navigateUrl(Constants.authPage);
     }
 
     public isLoggedIn() {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { RouterService } from 'src/app/services/router.service';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -11,22 +11,26 @@ import { Constants } from 'src/app/utils/constants';
 export class AuthComponent {
     @Input() buttonMessage: string = 'Sign In';
     @Output() endEvent: EventEmitter<void> = new EventEmitter();
-    username: string = '';
-    password: string = '';
+
     passwordVisibility: boolean = false;
     showErrorMessage: boolean = false;
     disableButton: boolean = false;
+    username: string = '';
+    password: string = '';
 
-    constructor(private router: Router, private authService: AuthService) {}
+    constructor(
+        private routerService: RouterService,
+        private authService: AuthService
+    ) {}
 
-    handleClick(event: any) {
+    handleClick() {
         this.disableButton = true;
 
         this.authService
             .authUser(this.username, this.password)
             .subscribe((result) => {
                 if (result) {
-                    this.router.navigateByUrl(Constants.controlPage);
+                    this.routerService.navigateUrl(Constants.controlPage);
                 } else {
                     this.showErrorMessage = true;
                 }
