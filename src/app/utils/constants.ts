@@ -4,6 +4,7 @@ export class Constants {
     static readonly userRoot = 'api/user';
     static readonly userDetailsRequest = Constants.userRoot + '/userDetails';
     static readonly colleaguesRequest = Constants.userRoot + '/colleagues';
+    static readonly updateSelfRequest = Constants.userRoot + '/self';
 
     static readonly teamRoot = 'api/team';
     static readonly teamsRequest = Constants.teamRoot + '/teams';

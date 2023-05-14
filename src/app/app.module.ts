@@ -31,6 +31,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
 import { httpInterceptorProviders } from './services/auth/auth.interceptor';
+import { UserEditComponent } from './components/control/user-edit/user-edit.component';
 
 const appRoutes: Routes = [
     { path: '', component: StartPageComponent },
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
         TeamComponent,
         InnerTeamUserComponent,
         NewTeamUserComponent,
+        UserEditComponent,
         NotFoundComponent,
         StartPageComponent,
     ],

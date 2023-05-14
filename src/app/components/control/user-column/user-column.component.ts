@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/model/user/user';
 import { UserService } from 'src/app/services/user.service';
 import { UserComponent } from './user/user.component';
 import { DialogComponent } from 'src/app/common/dialog/dialog.component';
@@ -12,42 +12,22 @@ import { Constants } from 'src/app/utils/constants';
     styleUrls: ['./user-column.component.scss'],
 })
 export class UserColumnComponent {
+    showNewUser: boolean = false;
+
     @Input() entities!: User[];
     @Input() isAdmin!: boolean;
+
     @Output() dataOnChange: EventEmitter<void> = new EventEmitter();
-    showNewUser: boolean = false;
 
     constructor(private userService: UserService, private dialog: MatDialog) {}
 
     createUser(invoker: UserComponent) {
         invoker.disableSaveButton = true;
         if (
-            invoker.actualFieldsUser.username &&
-            invoker.actualFieldsUser.name &&
-            invoker.actualFieldsUser.email
+            !invoker.actualFieldsUser.username ||
+            !invoker.actualFieldsUser.name ||
+            !invoker.actualFieldsUser.email
         ) {
-            this.userService
-                .createUser(invoker.actualFieldsUser)
-                .subscribe((result) => {
-                    if (result.error) {
-                        this.dialog.open(DialogComponent, {
-                            data: {
-                                title: Constants.errorDialogTitle,
-                                content: result.response,
-                            },
-                        });
-                        invoker.disableSaveButton = false;
-                    } else {
-                        this.dataOnChange.emit();
-                        this.dialog.open(DialogComponent, {
-                            data: {
-                                title: Constants.successDialogTitle,
-                                content: result.response,
-                            },
-                        });
-                    }
-                });
-        } else {
             this.dialog.open(DialogComponent, {
                 data: {
                     title: Constants.errorDialogTitle,
@@ -56,30 +36,70 @@ export class UserColumnComponent {
                 },
             });
             invoker.disableSaveButton = false;
+            return;
         }
+        this.userService
+            .createUser(invoker.actualFieldsUser)
+            .subscribe((result) => {
+                if (result.error) {
+                    this.dialog.open(DialogComponent, {
+                        data: {
+                            title: Constants.errorDialogTitle,
+                            content: result.response,
+                        },
+                    });
+                    invoker.disableSaveButton = false;
+                } else {
+                    this.dataOnChange.emit();
+                    this.dialog.open(DialogComponent, {
+                        data: {
+                            title: Constants.successDialogTitle,
+                            content: result.response,
+                        },
+                    });
+                }
+            });
     }
 
     updateUser(invoker: UserComponent) {
+        invoker.disableSaveButton = true;
         if (
-            invoker.user.username != invoker.actualFieldsUser.username &&
-            this.userService.getUserByUsername(
-                invoker.actualFieldsUser.username
-            )
+            !invoker.actualFieldsUser.username ||
+            !invoker.actualFieldsUser.name ||
+            !invoker.actualFieldsUser.email
         ) {
             this.dialog.open(DialogComponent, {
                 data: {
                     title: Constants.errorDialogTitle,
-                    content: 'Username you have entered is already used!',
+                    content:
+                        'The username, name and email fields are required!',
                 },
             });
-        } else {
-            this.userService.updateUser(
-                invoker.user.username,
-                invoker.actualFieldsUser
-            );
-            this.dataOnChange.emit();
-            invoker.isEditing = false;
+            invoker.disableSaveButton = false;
+            return;
         }
+
+        this.userService
+            .updateUser(invoker.actualFieldsUser)
+            .subscribe((result) => {
+                if (result.error) {
+                    this.dialog.open(DialogComponent, {
+                        data: {
+                            title: Constants.errorDialogTitle,
+                            content: result.response,
+                        },
+                    });
+                    invoker.disableSaveButton = false;
+                } else {
+                    this.dataOnChange.emit();
+                    this.dialog.open(DialogComponent, {
+                        data: {
+                            title: Constants.successDialogTitle,
+                            content: result.response,
+                        },
+                    });
+                }
+            });
     }
 
     deleteUser(invoker: UserComponent) {
@@ -89,6 +109,7 @@ export class UserColumnComponent {
             invoker.disableDeleteButton = false;
             return;
         }
+
         this.userService
             .deleteUser(invoker.user.username)
             .subscribe((result) => {

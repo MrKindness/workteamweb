@@ -21,12 +21,9 @@
             (dataOnChange)="refreshControlPanel()"
         ></team-column-component>
     </div>
-    <!-- <login-component
-        [headMessage]="'Settings'"
-        [buttonMessage]="'Save'"
-        [userEdit]="true"
+    <user-edit-component
         [user]="loggedUser!"
         *ngIf="!showContent"
-        (endEvent)="showContent = !showContent"
-    ></login-component> -->
+        (dataOnChange)="signIn()"
+    ></user-edit-component>
 </div>

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { User } from '../model/user';
+import { User } from '../model/user/user';
 import { AuthService } from './auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Constants } from '../utils/constants';
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { UserEdit } from '../model/user/user-edit';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -60,6 +61,49 @@ export class UserService {
             );
     }
 
+    updateUser(user: User): Observable<{ error: boolean; response: any }> {
+        return this.http.put(Constants.apiPath + Constants.userRoot, user).pipe(
+            map((result) => {
+                return { error: false, response: 'User updated!' };
+            }),
+            catchError(async (error) => {
+                console.log('user update error:');
+                console.log(error);
+
+                let response = 'User update error!';
+                try {
+                    response = error.error.message;
+                } catch (ex) {}
+                return { error: true, response: response };
+            })
+        );
+    }
+
+    updateUserSelf(
+        user: UserEdit
+    ): Observable<{ error: boolean; response: any }> {
+        return this.http
+            .put(Constants.apiPath + Constants.updateSelfRequest, user)
+            .pipe(
+                map((result) => {
+                    return {
+                        error: false,
+                        response: 'Information was updated! Sign in please!',
+                    };
+                }),
+                catchError(async (error) => {
+                    console.log('update error:');
+                    console.log(error);
+
+                    let response = 'Update error!';
+                    try {
+                        response = error.error.message;
+                    } catch (ex) {}
+                    return { error: true, response: response };
+                })
+            );
+    }
+
     deleteUser(
         username: string
     ): Observable<{ error: boolean; response: any }> {
@@ -89,6 +133,4 @@ export class UserService {
     getUserByUsername(username: string): User | undefined {
         return new User();
     }
-
-    updateUser(username: string, newData: User, password?: string): void {}
 }

@@ -1,0 +1,70 @@
+<div class="formContainer">
+    <div class="formSignin">
+        <h2 class="formSigninHeading">Settings</h2>
+        <div class="message" *ngIf="showErrorMessage">
+            {{ errorMessage }}
+        </div>
+        <mat-form-field>
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="userEdit.username" />
+        </mat-form-field>
+        <mat-form-field *ngIf="userEdit">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="userEdit.name" />
+        </mat-form-field>
+        <mat-form-field *ngIf="userEdit">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="userEdit.email" />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input
+                matInput
+                [type]="passwordVisibility ? 'text' : 'password'"
+                [(ngModel)]="userEdit.password"
+            />
+            <button
+                matSuffix
+                mat-icon-button
+                id="visibilityButton"
+                (click)="passwordVisibility = !passwordVisibility"
+            >
+                <mat-icon *ngIf="!passwordVisibility">visibility</mat-icon>
+                <mat-icon *ngIf="passwordVisibility">visibility_off</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field *ngIf="userEdit" id="passwordField">
+            <mat-label>New Password</mat-label>
+            <input
+                matInput
+                [type]="newPasswordVisibility ? 'text' : 'password'"
+                [(ngModel)]="userEdit.newPassword"
+            />
+            <button
+                matSuffix
+                mat-icon-button
+                id="visibilityButton"
+                (click)="newPasswordVisibility = !newPasswordVisibility"
+            >
+                <mat-icon *ngIf="!newPasswordVisibility">visibility</mat-icon>
+                <mat-icon *ngIf="newPasswordVisibility"
+                    >visibility_off</mat-icon
+                >
+            </button>
+            <mat-hint
+                ><strong
+                    >leave blank if you don't want to change password</strong
+                >
+            </mat-hint>
+        </mat-form-field>
+        <button
+            class="loginButton"
+            mat-flat-button
+            color="primary"
+            (click)="handleClick()"
+            [disabled]="disableSaveButton"
+        >
+            Save
+        </button>
+    </div>
+</div>

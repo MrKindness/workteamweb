@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from 'src/app/common/dialog/dialog.component';
 import { Team } from 'src/app/model/team';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/model/user/user';
+import { RouterService } from 'src/app/services/router.service';
 import { TeamService } from 'src/app/services/team.service';
 import { UserService } from 'src/app/services/user.service';
 import { Constants } from 'src/app/utils/constants';
@@ -14,14 +15,15 @@ import { Constants } from 'src/app/utils/constants';
 })
 export class ControlPanelComponent implements OnInit {
     loggedUser?: User;
+    showContent: boolean = true;
     users: User[] = [];
     teams: Team[] = [];
-    showContent: boolean = true;
 
     constructor(
         private userService: UserService,
         private teamService: TeamService,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private router: RouterService
     ) {}
 
     ngOnInit(): void {
@@ -58,5 +60,9 @@ export class ControlPanelComponent implements OnInit {
                 }
             });
         });
+    }
+
+    signIn() {
+        this.router.navigateUrl(Constants.authPage);
     }
 }
