@@ -19,17 +19,19 @@ export class UserEditComponent implements OnInit {
     newPasswordVisibility: boolean = false;
     disableSaveButton: boolean = false;
 
-    @Input() user: User = new User();
+    @Input() user?: User = undefined;
 
     @Output() dataOnChange: EventEmitter<void> = new EventEmitter();
 
     constructor(private userService: UserService, private dialog: MatDialog) {}
 
     ngOnInit() {
-        this.userEdit.id = this.user.id;
-        this.userEdit.username = this.user.username;
-        this.userEdit.name = this.user.name;
-        this.userEdit.email = this.user.email;
+        if (this.user) {
+            this.userEdit.id = this.user.id;
+            this.userEdit.username = this.user.username;
+            this.userEdit.name = this.user.name;
+            this.userEdit.email = this.user.email;
+        }
     }
 
     handleClick() {
@@ -48,9 +50,9 @@ export class UserEditComponent implements OnInit {
         }
 
         if (
-            this.userEdit.username === this.user.username &&
-            this.userEdit.name === this.user.name &&
-            this.userEdit.email === this.user.email &&
+            this.userEdit.username === this.user!.username &&
+            this.userEdit.name === this.user!.name &&
+            this.userEdit.email === this.user!.email &&
             !this.userEdit.newPassword
         ) {
             this.disableSaveButton = false;

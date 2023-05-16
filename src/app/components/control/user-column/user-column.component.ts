@@ -23,6 +23,7 @@ export class UserColumnComponent {
 
     createUser(invoker: UserComponent) {
         invoker.disableSaveButton = true;
+
         if (
             !invoker.actualFieldsUser.username ||
             !invoker.actualFieldsUser.name ||
@@ -31,13 +32,13 @@ export class UserColumnComponent {
             this.dialog.open(DialogComponent, {
                 data: {
                     title: Constants.errorDialogTitle,
-                    content:
-                        'The username, name and email fields are required!',
+                    content: Constants.userFieldsError,
                 },
             });
             invoker.disableSaveButton = false;
             return;
         }
+
         this.userService
             .createUser(invoker.actualFieldsUser)
             .subscribe((result) => {
@@ -50,6 +51,7 @@ export class UserColumnComponent {
                     });
                     invoker.disableSaveButton = false;
                 } else {
+                    this.showNewUser = false;
                     this.dataOnChange.emit();
                     this.dialog.open(DialogComponent, {
                         data: {
@@ -63,6 +65,7 @@ export class UserColumnComponent {
 
     updateUser(invoker: UserComponent) {
         invoker.disableSaveButton = true;
+
         if (
             !invoker.actualFieldsUser.username ||
             !invoker.actualFieldsUser.name ||
@@ -71,10 +74,20 @@ export class UserColumnComponent {
             this.dialog.open(DialogComponent, {
                 data: {
                     title: Constants.errorDialogTitle,
-                    content:
-                        'The username, name and email fields are required!',
+                    content: Constants.userFieldsError,
                 },
             });
+            invoker.disableSaveButton = false;
+            return;
+        }
+
+        if (
+            invoker.actualFieldsUser.username == invoker.user.username &&
+            invoker.actualFieldsUser.name == invoker.user.name &&
+            invoker.actualFieldsUser.email == invoker.user.email &&
+            invoker.actualFieldsUser.role == invoker.user.role
+        ) {
+            invoker.isEditing = false;
             invoker.disableSaveButton = false;
             return;
         }

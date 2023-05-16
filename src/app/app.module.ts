@@ -24,8 +24,8 @@ import { UserColumnComponent } from './components/control/user-column/user-colum
 import { UserComponent } from './components/control/user-column/user/user.component';
 import { TeamColumnComponent } from './components/control/team-column/team-column.component';
 import { TeamComponent } from './components/control/team-column/team/team.component';
-import { InnerTeamUserComponent } from './components/control/team-column/inner-team-user/inner-team-user.component';
-import { NewTeamUserComponent } from './components/control/team-column/new-team-user/new-team-user.component';
+import { InnerTeamUserComponent } from './components/control/team-column/team/inner-team-user/inner-team-user.component';
+import { NewTeamUserComponent } from './components/control/team-column/team/new-team-user/new-team-user.component';
 import { Constants } from './utils/constants';
 import { AuthComponent } from './components/auth/auth.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';

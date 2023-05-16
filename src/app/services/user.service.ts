@@ -9,34 +9,41 @@ import { UserEdit } from '../model/user/user-edit';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    constructor(private authService: AuthService, private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
+
+    loggedUser?: User;
 
     getLoggedUser(): Observable<{ error: boolean; response?: User }> {
         return this.http
             .get<User>(Constants.apiPath + Constants.userDetailsRequest)
             .pipe(
                 map((result) => {
+                    this.loggedUser = result;
                     return { error: false, response: result };
                 }),
                 catchError(async (error) => {
                     console.log(error);
-                    this.authService.logoutUser();
+                    this.loggedUser = undefined;
                     return { error: true, response: undefined };
                 })
             );
     }
 
-    getColleagues(): Observable<{ error: boolean; response: User[] }> {
+    getColleagues(): Observable<{ error: boolean; response: any }> {
         return this.http
-            .get<User[]>(Constants.apiPath + Constants.colleaguesRequest)
+            .get(Constants.apiPath + Constants.colleaguesRequest)
             .pipe(
                 map((result) => {
                     return { error: false, response: result };
                 }),
                 catchError(async (error) => {
-                    console.log('error while loading collegues:');
-                    console.log(error);
-                    return { error: true, response: [] };
+                    return {
+                        error: true,
+                        response: this.getErrorMessage(
+                            error,
+                            'Error while loading colleagues! Try to re-login!'
+                        ),
+                    };
                 })
             );
     }
@@ -46,17 +53,16 @@ export class UserService {
             .post(Constants.apiPath + Constants.userRoot, user)
             .pipe(
                 map((result) => {
-                    return { error: false, response: 'User created!' };
+                    return { error: false, response: 'User was created!' };
                 }),
                 catchError(async (error) => {
-                    console.log('user create error:');
-                    console.log(error);
-
-                    let response = 'User create error!';
-                    try {
-                        response = error.error.message;
-                    } catch (ex) {}
-                    return { error: true, response: response };
+                    return {
+                        error: true,
+                        response: this.getErrorMessage(
+                            error,
+                            'User create error!'
+                        ),
+                    };
                 })
             );
     }
@@ -64,17 +70,13 @@ export class UserService {
     updateUser(user: User): Observable<{ error: boolean; response: any }> {
         return this.http.put(Constants.apiPath + Constants.userRoot, user).pipe(
             map((result) => {
-                return { error: false, response: 'User updated!' };
+                return { error: false, response: 'User was updated!' };
             }),
             catchError(async (error) => {
-                console.log('user update error:');
-                console.log(error);
-
-                let response = 'User update error!';
-                try {
-                    response = error.error.message;
-                } catch (ex) {}
-                return { error: true, response: response };
+                return {
+                    error: true,
+                    response: this.getErrorMessage(error, 'User update error!'),
+                };
             })
         );
     }
@@ -92,14 +94,10 @@ export class UserService {
                     };
                 }),
                 catchError(async (error) => {
-                    console.log('update error:');
-                    console.log(error);
-
-                    let response = 'Update error!';
-                    try {
-                        response = error.error.message;
-                    } catch (ex) {}
-                    return { error: true, response: response };
+                    return {
+                        error: true,
+                        response: this.getErrorMessage(error, 'Update error!'),
+                    };
                 })
             );
     }
@@ -111,26 +109,32 @@ export class UserService {
             .delete(Constants.apiPath + Constants.userRoot + '/' + username)
             .pipe(
                 map((result) => {
-                    return { error: false, response: 'User deleted!' };
+                    return { error: false, response: 'User was deleted!' };
                 }),
                 catchError(async (error) => {
-                    console.log('user delete error:');
-                    console.log(error);
-
-                    let response = 'User delete error!';
-                    try {
-                        response = error.error.message;
-                    } catch (ex) {}
-                    return { error: true, response: response };
+                    return {
+                        error: true,
+                        response: this.getErrorMessage(
+                            error,
+                            'User delete error!'
+                        ),
+                    };
                 })
             );
     }
 
-    getAllUsers(): User[] {
-        return [new User()];
-    }
+    getErrorMessage(errorObject: any, defaultValue: any): string {
+        console.log(errorObject);
 
-    getUserByUsername(username: string): User | undefined {
-        return new User();
+        let response = defaultValue;
+        try {
+            response = response || errorObject.error.error;
+        } catch (ex) {}
+
+        if (errorObject.status == '401') {
+            response += ' Your session has expired, you need to re-login!';
+        }
+
+        return response;
     }
 }

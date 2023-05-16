@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { RouterService } from 'src/app/services/router.service';
+import { UserService } from 'src/app/services/user.service';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -20,21 +21,29 @@ export class AuthComponent {
 
     constructor(
         private routerService: RouterService,
-        private authService: AuthService
+        private authService: AuthService,
+        private userService: UserService
     ) {}
 
-    handleClick() {
+    async handleClick() {
         this.disableButton = true;
 
-        this.authService
+        let authResult = await this.authService
             .authUser(this.username, this.password)
-            .subscribe((result) => {
-                if (result) {
-                    this.routerService.navigateUrl(Constants.controlPage);
-                } else {
-                    this.showErrorMessage = true;
-                }
+            .toPromise();
+
+        if (authResult) {
+            let userResult = await this.userService.getLoggedUser().toPromise();
+
+            if (userResult.error) {
+                this.showErrorMessage = true;
                 this.disableButton = false;
-            });
+            } else {
+                this.routerService.navigateUrl(Constants.controlPage);
+            }
+        } else {
+            this.showErrorMessage = true;
+            this.disableButton = false;
+        }
     }
 }

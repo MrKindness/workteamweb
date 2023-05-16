@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Team } from '../model/team';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Constants } from '../utils/constants';
 import { catchError, map } from 'rxjs/operators';
 
@@ -9,28 +9,111 @@ import { catchError, map } from 'rxjs/operators';
 export class TeamService {
     constructor(private http: HttpClient) {}
 
-    getTeams(): Observable<{ error: boolean; response: Team[] }> {
+    getTeams(): Observable<{ error: boolean; response: any }> {
+        return this.http.get(Constants.apiPath + Constants.teamsRequest).pipe(
+            map((result) => {
+                return { error: false, response: result };
+            }),
+            catchError(async (error) => {
+                return {
+                    error: true,
+                    response: this.getErrorMessage(
+                        error,
+                        'Error while loading teams! Try to re-login!'
+                    ),
+                };
+            })
+        );
+    }
+
+    getUserCandidates(
+        id: string
+    ): Observable<{ error: boolean; response: any }> {
+        let path = Constants.apiPath + Constants.candidatesRequest;
+        if (id.length > 0) {
+            path += '/' + id;
+        }
+
+        return this.http.get(path).pipe(
+            map((result) => {
+                return { error: false, response: result };
+            }),
+            catchError(async (error) => {
+                return {
+                    error: true,
+                    response: this.getErrorMessage(
+                        error,
+                        'Error while loading candidates!'
+                    ),
+                };
+            })
+        );
+    }
+
+    createTeam(team: Team): Observable<{ error: boolean; response: any }> {
         return this.http
-            .get<Team[]>(Constants.apiPath + Constants.teamsRequest)
+            .post(Constants.apiPath + Constants.teamRoot, team)
             .pipe(
                 map((result) => {
-                    return { error: false, response: result };
+                    return { error: false, response: 'Team was created!' };
                 }),
                 catchError(async (error) => {
-                    console.log('error while loading teams:');
-                    console.log(error);
-                    return { error: true, response: [] };
+                    return {
+                        error: true,
+                        response: this.getErrorMessage(
+                            error,
+                            'Team create error!'
+                        ),
+                    };
                 })
             );
     }
 
-    getTeamByName(name: string): Team | undefined {
-        return new Team();
+    updateTeam(team: Team): Observable<{ error: boolean; response: any }> {
+        return this.http.put(Constants.apiPath + Constants.teamRoot, team).pipe(
+            map((result) => {
+                return { error: false, response: 'Team was updated!' };
+            }),
+            catchError(async (error) => {
+                return {
+                    error: true,
+                    response: this.getErrorMessage(error, 'Team update error!'),
+                };
+            })
+        );
     }
 
-    saveTeam(team: Team) {}
+    deleteTeam(id: string): Observable<{ error: boolean; response: any }> {
+        return this.http
+            .delete(Constants.apiPath + Constants.teamRoot + '/' + id)
+            .pipe(
+                map((result) => {
+                    return { error: false, response: 'Team was deleted!' };
+                }),
+                catchError(async (error) => {
+                    return {
+                        error: true,
+                        response: this.getErrorMessage(
+                            error,
+                            'Team delete error!'
+                        ),
+                    };
+                })
+            );
+    }
 
-    updateTeam(name: string, newData: Team): void {}
+    getErrorMessage(errorObject: any, defaultValue: any): string {
+        console.log(errorObject);
 
-    deleteTeam(name: string): void {}
+        let response = defaultValue;
+        try {
+            response = errorObject.error.error || response;
+        } catch (ex) {}
+
+        if (errorObject.status == '401') {
+            response += ' Your session has expired, you need to re-login!';
+        }
+
+        return response;
+    }
 }

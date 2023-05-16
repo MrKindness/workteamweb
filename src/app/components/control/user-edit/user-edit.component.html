@@ -1,5 +1,5 @@
 <div class="formContainer">
-    <div class="formSignin">
+    <div class="formSignin" *ngIf="user">
         <h2 class="formSigninHeading">Settings</h2>
         <div class="message" *ngIf="showErrorMessage">
             {{ errorMessage }}
@@ -66,5 +66,8 @@
         >
             Save
         </button>
+    </div>
+    <div *ngIf="!user" class="messageLogin">
+        <h2>Please log in!</h2>
     </div>
 </div>

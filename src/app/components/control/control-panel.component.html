@@ -22,8 +22,8 @@
         ></team-column-component>
     </div>
     <user-edit-component
-        [user]="loggedUser!"
         *ngIf="!showContent"
+        [user]="loggedUser"
         (dataOnChange)="signIn()"
     ></user-edit-component>
 </div>

@@ -21,31 +21,43 @@
                     />
                 </mat-form-field>
                 <div class="buttons teamButtons" *ngIf="isAdmin">
-                    <mat-icon
+                    <button
+                        mat-icon-button
                         class="button saveEntity"
                         *ngIf="isEditing"
+                        [disabled]="disableSaveButton"
                         (click)="saveTeam()"
-                        >save</mat-icon
                     >
-                    <mat-icon
+                        <mat-icon class="icon">save</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
                         class="button editEntity"
                         *ngIf="!isEditing"
-                        (click)="isEditing = !isEditing"
-                        >edit</mat-icon
+                        [disabled]="disableSaveButton"
+                        (click)="enterEditingMode()"
                     >
-                    <mat-icon class="button deleteEntity" (click)="deleteTeam()"
-                        >delete_forever</mat-icon
+                        <mat-icon class="icon">edit</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        class="button deleteEntity"
+                        (click)="deleteTeam()"
+                        [disabled]="disableDeleteButton"
                     >
+                        <mat-icon class="icon">delete_forever</mat-icon>
+                    </button>
                 </div>
             </div>
             <div class="titleBlock">
                 <p class="title">Users</p>
-                <mat-icon
-                    class="icon"
+                <button
+                    mat-icon-button
                     *ngIf="isAdmin && isEditing"
                     (click)="showNewUserInput()"
-                    >library_add</mat-icon
                 >
+                    <mat-icon class="icon">library_add</mat-icon>
+                </button>
             </div>
             <hr class="line" />
             <div class="users">

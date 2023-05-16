@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { RouterService } from 'src/app/services/router.service';
+import { UserService } from 'src/app/services/user.service';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -9,9 +10,24 @@ import { Constants } from 'src/app/utils/constants';
     styleUrls: ['./start-page.component.scss'],
 })
 export class StartPageComponent {
-    constructor(private routerService: RouterService) {}
+    disableButton: boolean = false;
+
+    constructor(
+        private routerService: RouterService,
+        private userSerice: UserService,
+        private authService: AuthService
+    ) {}
 
     handleClick() {
-        this.routerService.navigateUrl(Constants.controlPage);
+        this.disableButton = true;
+
+        this.userSerice.getLoggedUser().subscribe((result) => {
+            if (result.error) {
+                this.authService.logoutUser();
+            } else {
+                this.routerService.navigateUrl(Constants.controlPage);
+            }
+            this.disableButton = false;
+        });
     }
 }

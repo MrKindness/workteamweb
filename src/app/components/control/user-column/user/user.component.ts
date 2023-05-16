@@ -29,8 +29,11 @@ export class UserComponent implements OnInit {
     }
 
     saveUser() {
-        if (this.isNewUser) this.createUserEvent.emit(this);
-        else this.updateUserEvent.emit(this);
+        if (this.isNewUser) {
+            this.createUserEvent.emit(this);
+        } else {
+            this.updateUserEvent.emit(this);
+        }
     }
 
     deleteUser() {

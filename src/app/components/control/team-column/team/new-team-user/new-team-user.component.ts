@@ -12,7 +12,9 @@ export class NewTeamUserComponent {
     myControl = new FormControl('');
     filteredObjects!: Observable<string[]>;
     newUsername: string = '';
+
     @Input() users: string[] = [];
+
     @Output() deleteNewEvent: EventEmitter<void> = new EventEmitter();
     @Output() addNewEvent: EventEmitter<string> = new EventEmitter();
 

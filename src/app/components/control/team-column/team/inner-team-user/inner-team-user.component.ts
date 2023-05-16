@@ -9,5 +9,6 @@ export class InnerTeamUserComponent {
     @Input() username!: string;
     @Input() isAdmin: boolean = false;
     @Input() isEditing: boolean = false;
+
     @Output() deleteUserEvent: EventEmitter<string> = new EventEmitter();
 }
